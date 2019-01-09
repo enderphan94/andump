@@ -3,6 +3,8 @@ POSITIONAL=()
 while [[ $# -gt 0 ]]
 do
 key="$1"
+#IFS=$'\r\n' GLOBIGNORE='*' command eval  'rules=($(cat rules.txt))'
+IFS=$'\n' read -d '' -r -a rules < rules.txt
 
 case $key in
     -p|--packagename)
@@ -10,14 +12,14 @@ case $key in
     shift # past argument
     shift # past value
     ;;
-    
 esac
 done
 set -- "${POSITIONAL[@]}"
 name=${EXTENSION}
-path="/data/data/"
-path+=$name
-echo "$path"
+external_path="/data/data/"
+external_path+=$name
+database_path="$external_path/databases/"
+
 if adb get-state 1>/dev/null 2>&1
 then
 	echo "Device attached found";
@@ -31,11 +33,20 @@ then
 	echo "No path supplied, please run with '-p <package name>'"
 	exit 0
 fi
-
-true_name=`adb shell "su -c 'find $path -type f'"`
-for file in $true_name
+SAVEIFS=$IFS
+IFS=$(echo -en "\n\b")
+external_folder=`adb shell "su -c 'find $external_path -type f'"`
+for file in $external_folder
 do
-	echo $file;
+	if [[ $(adb shell "su -c 'strings \"$file\"'" | head -1) == "SQLite format 3" ]];
+	then
+		for rule in "${rules[@]}"
+		do
+			#echo "$rule"
+			adb shell "su -c 'sqlite3 \"$file\" .dump | grep $rule && echo \"$file\"'"
+		done
+	fi
 done
+IFS=$SAVEIFS
 #adb shell "su -c 'strings $name'"
 
