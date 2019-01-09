@@ -14,3 +14,6 @@ Internal:
 External:
 1. /mnt/sdcard/Android/data/
 
+# Note
+
+Script is being developed...
