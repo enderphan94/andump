@@ -3,7 +3,6 @@ POSITIONAL=()
 while [[ $# -gt 0 ]]
 do
 key="$1"
-#IFS=$'\r\n' GLOBIGNORE='*' command eval  'rules=($(cat rules.txt))'
 IFS=$'\n' read -d '' -r -a rules < rules.txt
 
 case $key in
@@ -22,15 +21,15 @@ database_path="$external_path/databases/"
 
 if adb get-state 1>/dev/null 2>&1
 then
-	echo "Device attached found";
+	echo "[+] Device attached found";
 else
-	echo "No device found";
+	echo "[-] No device found";
 	exit 0
 fi
 
 if [ -z $key ]
 then
-	echo "No path supplied, please run with '-p <package name>'"
+	echo "[-] No path supplied, please run with '-p <package name>'"
 	exit 0
 fi
 SAVEIFS=$IFS
@@ -43,8 +42,14 @@ do
 		for rule in "${rules[@]}"
 		do
 			#echo "$rule"
-			adb shell "su -c 'sqlite3 \"$file\" .dump | grep $rule && echo \"$file\"'"
+			adb shell "su -c 'sqlite3 \"$file\" .dump | grep $rule && echo \"$file\" && echo'"
 		done
+	else
+		for rule in "${rules[@]}"
+                do
+                        #echo "$rule"
+                        adb shell "su -c 'strings \"$file\" | grep $rule && echo \"$file\" \n'"
+                done
 	fi
 done
 IFS=$SAVEIFS
