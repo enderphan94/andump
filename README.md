@@ -33,12 +33,5 @@ External Storage
 
 Exp: ```./andump.sh -p com.google.android```
 
-# File locations
-Internal: 
-1. /data/data
-
-External:
-1. /mnt/sdcard/Android/data/
-
 # Note
 The script is being developed
