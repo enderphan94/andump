@@ -15,8 +15,8 @@ POSITIONAL=()
 while [[ $# -gt 0 ]]
 do
 key="$1"
-IFS=$'\n' read -d '' -r -a rules < rules.txt
-IFS=$'\n' read -d '' -r -a vulib < vulib.txt
+IFS=$'\n' read -d '' -r -a rules < src/rules.txt
+IFS=$'\n' read -d '' -r -a vulib < src/vulib.txt
 
 case $key in
     -p|--packagename)
@@ -41,12 +41,10 @@ name=${PACKAGE}
 lib=${LIBRARY}
 dir=${DIRECTORY}
 
-
 internal_path="/data/data/"
 internal_path+=$name
 sdcard_path="/sdcard/Android/data/"
 sdcard_path+=$name
-
 
 searching () {
 	SAVEIFS=$IFS
