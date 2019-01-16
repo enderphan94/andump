@@ -40,11 +40,17 @@ External Storage
 
 # Usage
 
-```./andump.sh -p <packagename>```
+```
 
+./andump.sh -p <packagename>
+
+./andump.sh -l true -d <decoded-jar-file>
+
+```
 Example
 
 For Data Forensic:  ```./andump.sh -p com.google.android```
+
 For Unreliable libraries: ```./andump.sh -l true -d /home/appcode```
 
 ## For Unreliable Libraries
