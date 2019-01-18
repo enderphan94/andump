@@ -29,8 +29,8 @@ case $key in
     shift # past argument
     shift # past value
     ;;
-    -d|--directory)
-    DIRECTORY="$2"
+    -f|--apk)
+    APK="$2"
     shift # past argument
     shift # past value
     ;;
@@ -40,11 +40,27 @@ set -- "${POSITIONAL[@]}"
 name=${PACKAGE}
 lib=${LIBRARY}
 dir=${DIRECTORY}
+apk=${APK}
 
 internal_path="/data/data/"
 internal_path+=$name
 sdcard_path="/sdcard/Android/data/"
 sdcard_path+=$name
+
+current_path=`pwd`
+tempapk="$current_path/temp/tempapk"
+if [ ! -d "$current_path/temp" ]; then
+	mkdir temp
+	if [ ! -d $tempapk ]; then
+		mkdir $tempapk
+	fi
+else
+	rm temp -rf
+	mkdir temp
+        if [ ! -d $tempapk ]; then
+                mkdir $tempapk
+        fi
+fi
 
 searching () {
 	SAVEIFS=$IFS
@@ -89,14 +105,35 @@ then
 		exit 0
 	fi
 
-elif [ "$lib" == "true" ] && [ ! -z "$dir" ]
-	then
-	echo -e "\e[33mThe files contain unreliable library:\e[97m"
-	echo
-	for lib in "${vulib[@]}"
-	do
-		grep -Rw -l "$lib" $dir
-	done
+elif [ "$lib" == "true" ] &&  [ ! -z "$apk" ]
+then		
+	tmp="$current_path/temp"
+	cp $apk $tmp
+	apk_in_temp=`ls $current_path/temp/*.apk`
+	apk_in_temp_count=`ls $current_path/temp/*.apk | wc -l`
+	if [ $apk_in_temp_count != 1 ]; then
+		echo -e "\e[31m[-]There are something wrong, apk file in temp has more than one or empty\e[97m"
+		exit 0
+	else
+		echo -e "\e[33mIs this the correct apk file $apk_in_temp? yes or no \e[97m"
+		read key
+		if [ $key = "yes" ]; then
+			echo $tmpapk	
+			reverse=`apktool d $apk_in_temp -o $tempapk -f`
+			#dir="${apk//.apk}"
+			#echo $dir
+			echo
+			echo -e "\e[33mThe files contain unreliable library:\e[97m"
+			echo
+			for lib in "${vulib[@]}"
+			do
+				grep -Rw -l "$lib" $tmp
+			done	
+		else
+			exit 0
+		fi
+	fi
+	rm temp -rf
 else
 	echo -e "\e[31m[-] Please provide correct arguments!!!\e[97m"
 	exit 0
