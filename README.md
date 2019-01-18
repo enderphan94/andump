@@ -37,6 +37,11 @@ SQLite Databases
 Realm Databases
 Internal Storage
 External Storage
+# Installation
+
+```
+./install.sh
+```
 
 # Usage
 
@@ -44,7 +49,7 @@ External Storage
 
 ./andump.sh -p <packagename>
 
-./andump.sh -l true -d <decoded-jar-file>
+./andump.sh -l true -f <file.apk>
 
 ```
 Example
