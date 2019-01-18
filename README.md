@@ -1,4 +1,6 @@
 # andump
+**This is the repository for Andump. If you are looking for the Andump website. Click [here](http://andump.e-cyber.ee).**
+
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 For Android Data Forensic
@@ -9,6 +11,11 @@ The different data storage options available on Android:
 - External file storage: Store files on the shared external file system. This is usually for shared user files, such as photos.
 - Shared preferences: Store private primitive data in key-value pairs.
 - Databases: Store structured data in a private database.
+
+For Library checking:
+
+More here https://enderphan.e-cyber.ee/library/soft-link#object-persistence
+
 # Plan
 
 1. Dump data from Sandbox and external enclaves
@@ -49,7 +56,4 @@ For Data Forensic:  ```./andump.sh -p com.google.android```
 
 For Unreliable libraries: ```./andump.sh -l true -d /home/appcode```
 
-## For Unreliable Libraries
-
-Read more here https://enderphan.e-cyber.ee/library/soft-link#object-persistence
 
