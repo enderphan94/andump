@@ -46,21 +46,10 @@ internal_path="/data/data/"
 internal_path+=$name
 sdcard_path="/sdcard/Android/data/"
 sdcard_path+=$name
-
+echo $1
 current_path=`pwd`
 tempapk="$current_path/temp/tempapk"
-if [ ! -d "$current_path/temp" ]; then
-	mkdir temp
-	if [ ! -d $tempapk ]; then
-		mkdir $tempapk
-	fi
-else
-	rm temp -rf
-	mkdir temp
-        if [ ! -d $tempapk ]; then
-                mkdir $tempapk
-        fi
-fi
+sucmd=$(adb shell 'su')
 
 searching () {
 	SAVEIFS=$IFS
@@ -89,11 +78,18 @@ searching () {
 if [ ! -z "$name" ]
 then
 	if adb get-state 1>/dev/null 2>&1
-	then
-		echo -e "\e[33m[+] Device attached found\e[97m";
+ 	then
 		echo
-		searching $internal_path
-		searching $sdcard_path
+ 		echo -e "\e[33m[+] Device attached found\e[97m";
+		if [ "$sucmd" -eq 0 ]
+		then
+			echo
+			searching $internal_path
+			searching $sdcard_path
+		else
+                       	echo -e "\e[31m[-] The device seems not to be rooted ??!! \e[97m";
+			exit 0
+		fi
 	else
 		echo -e "\e[31m[-] No device found. Please run 'adb devices' to find your device and run 'adb connect <your-device>'\e[97m";
 		exit 0
@@ -101,12 +97,25 @@ then
 
 	if [ -z $key ]
 	then
-		echo -e "\e[31m[-] No path supplied, please run with '-p <package name>'\e[97m"
+		echo -e "\e[31m[-] No path supplied, please run with '-p <package name>'\e[96m"
 		exit 0
 	fi
 
 elif [ "$lib" == "true" ] &&  [ ! -z "$apk" ]
-then		
+then	
+	if [ ! -d "$current_path/temp" ]; then
+		mkdir temp
+		if [ ! -d $tempapk ]; then
+			mkdir $tempapk
+		fi
+	else
+		rm temp -rf
+		mkdir temp
+		if [ ! -d $tempapk ]; then
+			mkdir $tempapk
+		fi
+	fi
+	
 	tmp="$current_path/temp"
 	cp $apk $tmp
 	apk_in_temp=`ls $current_path/temp/*.apk`
