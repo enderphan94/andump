@@ -49,7 +49,7 @@ sdcard_path+=$name
 echo $1
 current_path=`pwd`
 tempapk="$current_path/temp/tempapk"
-sucmd=$(adb shell 'su')
+sucmd=$(adb shell \"su -c 'echo'\")
 
 searching () {
 	SAVEIFS=$IFS
@@ -81,15 +81,15 @@ then
  	then
 		echo
  		echo -e "\e[33m[+] Device attached found\e[97m";
-		if [ "$sucmd" -eq 0 ]
-		then
-			echo
+		#if [ "$sucmd" -eq 0 ]
+		#then
+		#	echo
 			searching $internal_path
 			searching $sdcard_path
-		else
-                       	echo -e "\e[31m[-] The device seems not to be rooted ??!! \e[97m";
-			exit 0
-		fi
+		#else
+                #       	echo -e "\e[31m[-] The device seems not to be rooted ??!! \e[97m";
+		#	exit 0
+		#fi
 	else
 		echo -e "\e[31m[-] No device found. Please run 'adb devices' to find your device and run 'adb connect <your-device>'\e[97m";
 		exit 0
