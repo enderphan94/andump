@@ -27,7 +27,6 @@ Internal:
 
 External:
 1. /mnt/sdcard/Android/data is a softlink to /sdcard/
-2. /
 
 
 Shared Preferences
@@ -35,6 +34,11 @@ SQLite Databases
 Realm Databases
 Internal Storage
 External Storage
+
+# Version
+
+[v1.0](https://github.com/enderphan94/andump/releases/tag/v1.0)
+
 # Installation
 
 ```
