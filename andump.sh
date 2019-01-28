@@ -53,13 +53,14 @@ sucmd=$(adb shell \"su -c 'echo'\")
 
 searching () {
 	SAVEIFS=$IFS
-	IFS=$(echo -en "\n\b")
+	IFS=$(echo -en "\n\b\r")
 	
 	folder=`adb shell "su -c 'find $1 -type f'"`
 
 	for file in $folder
 	do
-		if [[ $(adb shell "su -c 'strings \"$file\"'" | head -1) == "SQLite format 3" ]];
+		header=`adb shell "su -c 'strings \"$file\"'" | head -1`
+		if [[ $header == "SQLite format 3" ]];
 		then
 			for rule in "${rules[@]}"
 			do
@@ -81,6 +82,7 @@ then
  	then
 		echo
  		echo -e "\e[33m[+] Device attached found\e[97m";
+		echo
 		#if [ "$sucmd" -eq 0 ]
 		#then
 		#	echo
