@@ -37,7 +37,7 @@ External Storage
 
 # Version
 
-[v1.0](https://github.com/enderphan94/andump/releases/tag/v1.0)
+[Versions](https://github.com/enderphan94/andump/releases)
 
 # Installation
 
