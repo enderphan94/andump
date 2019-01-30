@@ -11,6 +11,29 @@ echo "         EnderPhan---------------------     "
 echo
 echo
 
+if [ "$1" == "-h" ]
+then
+	echo "-ls : List installed package"
+	echo "-p <packagename> : Check if sensitive data stored in internal & external data"
+	echo "-l true -f <file.apk>: Check if insecure library is set"
+	echo "-h: Help"
+	exit 0 
+fi
+
+if [ "$1" == "-ls" ]
+then
+	if adb get-state 1>/dev/null 2>&1
+        then
+                echo
+                echo -e "\e[33m[+] Device attached found\e[97m";
+                echo
+               	adb shell pm list packages | sed 's/package://'
+		exit 0
+        else
+                echo -e "\e[31m[-] No device found. Please run 'adb devices' to find your device and run 'adb connect <your-device>'\e[97m";
+                exit 0
+fi
+fi
 POSITIONAL=()
 while [[ $# -gt 0 ]]
 do
@@ -34,6 +57,11 @@ case $key in
     shift # past argument
     shift # past value
     ;;
+    -ls|--list)
+    LIST=""
+    shift # past argument
+    shift # past value
+    ;;
 esac
 done
 set -- "${POSITIONAL[@]}"
@@ -41,12 +69,12 @@ name=${PACKAGE}
 lib=${LIBRARY}
 dir=${DIRECTORY}
 apk=${APK}
+list=${LIST}
 
 internal_path="/data/data/"
 internal_path+=$name
 sdcard_path="/sdcard/Android/data/"
 sdcard_path+=$name
-echo $1
 current_path=`pwd`
 tempapk="$current_path/temp/tempapk"
 sucmd=$(adb shell \"su -c 'echo'\")
@@ -103,7 +131,7 @@ then
 		exit 0
 	fi
 
-elif [ "$lib" == "true" ] &&  [ ! -z "$apk" ]
+elif [ $lib == "true" ] &&  [ ! -z "$apk" ]
 then	
 	if [ ! -d "$current_path/temp" ]; then
 		mkdir temp
