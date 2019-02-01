@@ -48,10 +48,10 @@ External Storage
 # Usage
 
 ```
-
-./andump.sh -p <packagename>
-
-./andump.sh -l true -f <file.apk>
+-ls                   : List installed package
+-p <packagename>      : Check if sensitive data stored in internal & external data
+-l true -f <file.apk> : Check if insecure library is set
+-h                    : Help
 
 ```
 Example
