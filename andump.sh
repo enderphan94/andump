@@ -11,12 +11,14 @@ echo "         EnderPhan---------------------     "
 echo
 echo
 
-if [ "$1" == "-h" ]
+if [ "$1" == "-h" ] || [ "$1" == "" ]
 then
-	echo "-ls : List installed package"
-	echo "-p <packagename> : Check if sensitive data stored in internal & external data"
-	echo "-l true -f <file.apk>: Check if insecure library is set"
-	echo "-h: Help"
+	echo -e "\e[33m"
+	echo "-ls                   : List installed package"
+	echo "-p <packagename>      : Check if sensitive data stored in internal & external data"
+	echo "-l true -f <file.apk> : Check if insecure library is set"
+	echo "-h                    : Help"
+	echo -e "\e[97m"
 	exit 0 
 fi
 
@@ -31,7 +33,9 @@ then
 		exit 0
         else
                 echo -e "\e[31m[-] No device found. Please run 'adb devices' to find your device and run 'adb connect <your-device>'\e[97m";
-                exit 0
+                echo -e "\e[31m[-] Finding devices...................\e[97m";
+		adb devices
+		exit 0
 fi
 fi
 POSITIONAL=()
@@ -121,7 +125,9 @@ then
 		#	exit 0
 		#fi
 	else
-		echo -e "\e[31m[-] No device found. Please run 'adb devices' to find your device and run 'adb connect <your-device>'\e[97m";
+ 		echo -e "\e[31m[-] No device found. Please run 'adb devices' to find your device and run 'adb connect <your-device>'\e[97m";
+                echo -e "\e[31m[-] Finding devices...................\e[97m";
+		adb devices
 		exit 0
 	fi
 
@@ -131,7 +137,7 @@ then
 		exit 0
 	fi
 
-elif [ $lib == "true" ] &&  [ ! -z "$apk" ]
+elif [ "$lib" == "true" ] &&  [ ! -z "$apk" ]
 then	
 	if [ ! -d "$current_path/temp" ]; then
 		mkdir temp
