@@ -16,7 +16,7 @@ For Library checking:
 
 More here https://enderphan.e-cyber.ee/library/soft-link#object-persistence
 
-Donations
+# Donations
 You can help (or thank) the author of Andump by making a donation, if you feel like doing so
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=CFLQ8SMJTDQGJ&currency_code=EUR&source=url)
