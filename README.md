@@ -65,4 +65,6 @@ For Data Forensic:  ```./andump.sh -p com.google.android```
 
 For Unreliable libraries: ```./andump.sh -l true -d /home/appcode```
 
+You want to find your plaint-text password in the entire application structure from out and in sandbox data, you just need to insert them in ```/src/rules.txt``` and run ```./andump.sh -p com.yourapp.android```
+
 
