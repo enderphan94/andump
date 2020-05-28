@@ -7,18 +7,16 @@ echo "\__  \  /    \  / __ |  |  \/     \\____ \  "
 echo " / __ \|   |  \/ /_/ |  |  /  Y Y  \  |_> > "
 echo "(____  /___|  /\____ |____/|__|_|  /   __/  "
 echo "     \/     \/      \/           \/|__|     "
-echo "         EnderPhan---------------------     "
+echo "    Hunting for sensitive data - EnderPhan  "
 echo
 echo
 
 if [ "$1" == "-h" ] || [ "$1" == "" ]
 then
-	echo -e "\e[33m"
 	echo "-ls                   : List installed package"
 	echo "-p <packagename>      : Check if sensitive data stored in internal & external data"
 	echo "-l true -f <file.apk> : Check if insecure library is set"
 	echo "-h                    : Help"
-	echo -e "\e[97m"
 	exit 0 
 fi
 
@@ -27,13 +25,13 @@ then
 	if adb get-state 1>/dev/null 2>&1
         then
                 echo
-                echo -e "\e[33m[+] Device attached found\e[97m";
+                echo "[+] Device has been found";
                 echo
                	adb shell pm list packages | sed 's/package://'
 		exit 0
         else
-                echo -e "\e[31m[-] No device found. Please run 'adb devices' to find your device and run 'adb connect <your-device>'\e[97m";
-                echo -e "\e[31m[-] Finding devices...................\e[97m";
+                echo "[-] No device found. Please run 'adb devices' to find your device and run 'adb connect <your-device>'";
+                echo "[-] Finding devices...................";
 		adb devices
 		exit 0
 fi
@@ -81,7 +79,7 @@ sdcard_path="/sdcard/Android/data/"
 sdcard_path+=$name
 current_path=`pwd`
 tempapk="$current_path/temp/tempapk"
-sucmd=$(adb shell \"su -c 'echo'\")
+#sucmd=$(adb shell \"su -c 'echo'\")
 
 searching () {
 	SAVEIFS=$IFS
@@ -96,12 +94,12 @@ searching () {
 		then
 			for rule in "${rules[@]}"
 			do
-				adb shell "su -c 'sqlite3 \"$file\" .dump | grep $rule && echo -e \"\e[33m$file\e[97m\" && echo '"
+				adb shell "su -c 'sqlite3 \"$file\" .dump | grep $rule && echo -e \"$file\" && echo '"
 			done
 		else
 			for rule in "${rules[@]}"
 			do
-				adb shell "su -c 'strings \"$file\" | grep $rule && echo -e \"\e[33m$file\e[97m\" && echo '"
+				adb shell "su -c 'strings \"$file\" | grep $rule && echo -e \"$file\" && echo '"
 			done
 		fi
 	done
@@ -113,27 +111,29 @@ then
 	if adb get-state 1>/dev/null 2>&1
  	then
 		echo
- 		echo -e "\e[33m[+] Device attached found\e[97m";
+ 		echo "[+] Device has been found";
 		echo
 		#if [ "$sucmd" -eq 0 ]
 		#then
 		#	echo
+			echo "[+] Searching for sandbox directory /data/data/"
 			searching $internal_path
+			echo "[+] Searching for external directory /sdcard/Android/data/"
 			searching $sdcard_path
 		#else
-                #       	echo -e "\e[31m[-] The device seems not to be rooted ??!! \e[97m";
+                #       	echo "[-] The device seems not to be rooted ??!! ";
 		#	exit 0
 		#fi
 	else
- 		echo -e "\e[31m[-] No device found. Please run 'adb devices' to find your device and run 'adb connect <your-device>'\e[97m";
-                echo -e "\e[31m[-] Finding devices...................\e[97m";
+ 		echo "[-] No device found. Please run 'adb devices' to find your device and run 'adb connect <your-device>'";
+        echo "[-] Finding devices...................";
 		adb devices
 		exit 0
 	fi
 
 	if [ -z $key ]
 	then
-		echo -e "\e[31m[-] No path supplied, please run with '-p <package name>'\e[96m"
+		echo "[-] No path supplied, please run with '-p <package name>'"
 		exit 0
 	fi
 
@@ -157,10 +157,10 @@ then
 	apk_in_temp=`ls $current_path/temp/*.apk`
 	apk_in_temp_count=`ls $current_path/temp/*.apk | wc -l`
 	if [ $apk_in_temp_count != 1 ]; then
-		echo -e "\e[31m[-]There are something wrong, apk file in temp has more than one or empty\e[97m"
+		echo "[-]There are something wrong, apk file in temp has more than one or empty"
 		exit 0
 	else
-		echo -e "\e[33mIs this the correct apk file $apk_in_temp? yes or no \e[97m"
+		echo "Is this the correct apk file $apk_in_temp? yes or no "
 		read key
 		if [ $key = "yes" ]; then
 			echo $tmpapk	
@@ -168,7 +168,7 @@ then
 			#dir="${apk//.apk}"
 			#echo $dir
 			echo
-			echo -e "\e[33mThe files contain unreliable library:\e[97m"
+			echo "The files contain unreliable library:"
 			echo
 			for lib in "${vulib[@]}"
 			do
@@ -180,6 +180,6 @@ then
 	fi
 	rm temp -rf
 else
-	echo -e "\e[31m[-] Please provide correct arguments!!!\e[97m"
+	echo "[-] Please provide correct arguments!!!"
 	exit 0
 fi
