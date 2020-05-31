@@ -13,7 +13,7 @@ The different data storage options available on Android:
 
 For Library checking:
 
-More here https://enderphan.e-cyber.ee/library/soft-link#object-persistence
+More here https://enderspub.kubertu.com/android-security-research-crypto-wallet-local-storage-attack
 
 # Do-na-te
 Just in case you love it!
