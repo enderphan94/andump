@@ -11,9 +11,8 @@ The different data storage options available on Android:
 - Shared preferences: Store private primitive data in key-value pairs.
 - Databases: Store structured data in a private database.
 
-For Library checking:
 
-More here https://enderspub.kubertu.com/android-security-research-crypto-wallet-local-storage-attack
+My research https://enderspub.kubertu.com/android-security-research-crypto-wallet-local-storage-attack
 
 # Do-na-te
 Just in case you love it!
