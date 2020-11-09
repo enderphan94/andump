@@ -99,7 +99,7 @@ searching () {
 		else
 			for rule in "${rules[@]}"
 			do
-				adb shell "su -c 'strings \"$file\" | grep $rule && echo -e \"$file\" && echo '"
+				adb shell "su -c 'strings \"$file\" 2>/dev/null | grep $rule && echo -e \"$file\" && echo '"
 			done
 		fi
 	done
